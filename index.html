@@ -117,6 +117,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transform: scale(1.5);
+            transform-origin: center center;
         }
         .hotspot-destination .marker-pin {
             width: 50px; height: 50px;
@@ -270,9 +272,9 @@
                     createTooltipArgs: {}
                 },
                 {
-                    // 箭头指引文字 - 向右再移8度 (yaw 35→43)
-                    pitch: 0,
-                    yaw: 43,
+                    // 箭头指引文字 - 向右下移动一点点 (yaw 43→46, pitch 0→-5)
+                    pitch: -5,
+                    yaw: 46,
                     type: 'info',
                     createTooltipFunc: createArrowGuide,
                     createTooltipArgs: {}
