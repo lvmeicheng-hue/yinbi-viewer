@@ -188,6 +188,21 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
             padding: 8px 16px;
         }
+
+        /* ===== Red dashed path line ===== */
+        .path-line-svg {
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .path-line-svg svg {
+            overflow: visible;
+        }
+        .dashed-path {
+            animation: dash-flow 2s linear infinite;
+        }
+        @keyframes dash-flow {
+            to { stroke-dashoffset: -24; }
+        }
     </style>
 </head>
 <body>
@@ -204,6 +219,9 @@
         <div class="legend-item">
             <div class="legend-icon restaurant"></div>
             <span>入口：大胖当家</span>
+        </div>
+        <div class="legend-item" style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;">
+            <span style="font-size:12px;color:#888;">红色虚线：从目的地到入口</span>
         </div>
     </div>
 
@@ -236,27 +254,35 @@
             pitch: 0,
             hotSpots: [
                 {
-                    // 目的地标志 - 向左上方移动 (from yaw=20, pitch=15)
+                    // 目的地标志 - 向左移动10度 (yaw 10→20)
                     pitch: 25,
-                    yaw: 10,
+                    yaw: 20,
                     type: 'info',
                     createTooltipFunc: createDestMarker,
                     createTooltipArgs: {}
                 },
                 {
-                    // 入口画框 - 向右移动40度 (from yaw=-30 → yaw=10)
+                    // 入口画框 - 向右移动30度 (yaw 10→-20)
                     pitch: 5,
-                    yaw: 10,
+                    yaw: -20,
                     type: 'info',
                     createTooltipFunc: createRestFrame,
                     createTooltipArgs: {}
                 },
                 {
-                    // 箭头指引文字 - 向右40度 + 向上一大步 (from yaw=-35, pitch=-10)
-                    pitch: 10,
-                    yaw: 5,
+                    // 箭头指引文字 - 向右30度 + 向下10度 (yaw 5→-25, pitch 10→0)
+                    pitch: 0,
+                    yaw: -25,
                     type: 'info',
                     createTooltipFunc: createArrowGuide,
+                    createTooltipArgs: {}
+                },
+                {
+                    // 红色虚线 - 连接目的地和入口
+                    pitch: 15,
+                    yaw: 0,
+                    type: 'info',
+                    createTooltipFunc: createPathLine,
                     createTooltipArgs: {}
                 }
             ]
@@ -286,6 +312,18 @@
             hotSpotDiv.classList.add('hotspot-arrow');
             hotSpotDiv.innerHTML =
                 '<div class="arrow-text">前往大胖当家从此上楼 ↑</div>';
+        }
+
+        // 红色虚线路径
+        function createPathLine(hotSpotDiv, args) {
+            hotSpotDiv.classList.add('path-line-svg');
+            hotSpotDiv.innerHTML =
+                '<svg width="300" height="150" viewBox="0 0 300 150">' +
+                    '<path d="M 20 80 Q 80 80 120 60 Q 160 40 200 50 Q 240 60 280 70" ' +
+                          'stroke="#ff6b6b" stroke-width="4" stroke-dasharray="10,5" fill="none" ' +
+                          'class="dashed-path" stroke-linecap="round"/>' +
+                    '<polygon points="280,70 270,60 275,75" fill="#ff6b6b"/>' +
+                '</svg>';
         }
 
         // 拖拽提示自动隐藏
