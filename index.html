@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 全景</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #000;
+            overflow: hidden;
+        }
+        #panorama { width: 100vw; height: 100vh; }
+
+        /* Top nav */
+        .nav-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-bar .title {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .nav-bar .subtitle {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-left: auto;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Hide pannellum defaults */
+        .pnlm-controls-container { display: none !important; }
+        .pnlm-hotspot .pnlm-sprite { display: none !important; }
+        .pnlm-hotspot { background: none !important; width: auto !important; height: auto !important; }
+
+        /* Drag hint */
+        .drag-hint {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px 28px;
+            color: #fff;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+        .drag-hint.hidden { opacity: 0; }
+        .drag-hint svg {
+            width: 24px; height: 24px;
+            vertical-align: middle;
+            margin-right: 8px;
+            fill: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <span class="title">360 全景</span>
+        <span class="subtitle">拖拽查看</span>
+    </div>
+
+    <div id="panorama"></div>
+
+    <div class="drag-hint" id="dragHint">
+        <svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+        拖拽画面查看全景
+    </div>
+
+    <script>
+        var viewer = pannellum.viewer('panorama', {
+            type: 'equirectangular',
+            panorama: 'panorama.jpg',
+            autoLoad: true,
+            compass: false,
+            showZoomCtrl: false,
+            showFullscreenCtrl: false,
+            mouseZoom: true,
+            keyboardZoom: false,
+            friction: 0.15,
+            minHfov: 40,
+            maxHfov: 120,
+            hfov: 100,
+            minPitch: -50,
+            maxPitch: 80,
+            yaw: 0,
+            pitch: 0,
+            hotSpots: []
+        });
+
+        var hintShown = true;
+        document.getElementById('panorama').addEventListener('mousedown', hideDragHint);
+        document.getElementById('panorama').addEventListener('touchstart', hideDragHint);
+        function hideDragHint() {
+            if (hintShown) {
+                document.getElementById('dragHint').classList.add('hidden');
+                hintShown = false;
+                setTimeout(function() {
+                    document.getElementById('dragHint').style.display = 'none';
+                }, 1000);
+            }
+        }
+        setTimeout(function() { hideDragHint(); }, 3000);
+    </script>
+</body>
+</html>
