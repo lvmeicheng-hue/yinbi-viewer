@@ -254,25 +254,25 @@
             pitch: 0,
             hotSpots: [
                 {
-                    // 目的地标志 - 向左移动10度 (yaw 10→20)
+                    // 目的地标志 - 向左移动10度 (yaw 10→0)
                     pitch: 25,
-                    yaw: 20,
+                    yaw: 0,
                     type: 'info',
                     createTooltipFunc: createDestMarker,
                     createTooltipArgs: {}
                 },
                 {
-                    // 入口画框 - 向右移动30度 (yaw 10→-20)
+                    // 入口画框 - 向右移动30度 (yaw 10→40)
                     pitch: 5,
-                    yaw: -20,
+                    yaw: 40,
                     type: 'info',
                     createTooltipFunc: createRestFrame,
                     createTooltipArgs: {}
                 },
                 {
-                    // 箭头指引文字 - 向右30度 + 向下10度 (yaw 5→-25, pitch 10→0)
+                    // 箭头指引文字 - 向右30度 + 向下10度 (yaw 5→35, pitch 10→0)
                     pitch: 0,
-                    yaw: -25,
+                    yaw: 35,
                     type: 'info',
                     createTooltipFunc: createArrowGuide,
                     createTooltipArgs: {}
@@ -280,7 +280,7 @@
                 {
                     // 红色虚线 - 连接目的地和入口
                     pitch: 15,
-                    yaw: 0,
+                    yaw: 20,
                     type: 'info',
                     createTooltipFunc: createPathLine,
                     createTooltipArgs: {}
